@@ -2,6 +2,7 @@ package com.zengpeng.shardingsphere.demo_shardingsphere;
 
 import com.zengpeng.shardingsphere.demo_shardingsphere.entity.TOrderEntity;
 import com.zengpeng.shardingsphere.demo_shardingsphere.service.OrderService;
+import org.apache.shardingsphere.spi.keygen.ShardingKeyGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +17,7 @@ class DemoShardingsphereApplicationTests {
 
     @Test
     void contextLoads() {
-        for (int i = 150; i < 200; i++) {
+        for (int i = 1; i < 1000; i++) {
             TOrderEntity tOrderEntity = new TOrderEntity();
             tOrderEntity.setBusinessId(Long.valueOf(i));
 //            tOrderEntity.setId(Long.valueOf(i));
@@ -35,8 +36,12 @@ class DemoShardingsphereApplicationTests {
     }
 
     public static void main(String[] args) {
-        Long s = 711642890467540993L;
-        System.out.println(s%4);
+        Long s = 712615701344419840L;
+        System.out.println(s%8);
+
+        Long ss = 712615701625438209L;
+        System.out.println(ss%8);
+
     }
 
 }
