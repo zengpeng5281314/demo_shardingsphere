@@ -8,6 +8,8 @@ public interface OrderService {
 
     void addOrder(TOrderEntity tOrderEntity);
 
+    void saveOrderList(List<TOrderEntity> tOrderEntities);
+
     TOrderEntity selectById(Long id);
 
     TOrderEntity selectByBId(Long id,Long bid);

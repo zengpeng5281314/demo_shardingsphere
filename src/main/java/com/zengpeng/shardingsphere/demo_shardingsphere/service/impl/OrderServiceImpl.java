@@ -29,6 +29,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void saveOrderList(List<TOrderEntity> tOrderEntities) {
+        torderRepository.saveAll(tOrderEntities);
+    }
+
+    @Override
     public TOrderEntity selectById(Long id) {
         return torderRepository.findById(id).orElse(null);
     }

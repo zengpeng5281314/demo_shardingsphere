@@ -1,37 +1,81 @@
 package com.zengpeng.shardingsphere.demo_shardingsphere;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
+import com.xhl.feignserviceapi.feigndto.Result;
 import com.zengpeng.shardingsphere.demo_shardingsphere.entity.TOrderDetailEntity;
 import com.zengpeng.shardingsphere.demo_shardingsphere.entity.TOrderEntity;
+import com.zengpeng.shardingsphere.demo_shardingsphere.feign.GetPrimaryKeyFeign;
+import com.zengpeng.shardingsphere.demo_shardingsphere.feign.TestFeign;
 import com.zengpeng.shardingsphere.demo_shardingsphere.repository.TOrderDetailRepository;
 import com.zengpeng.shardingsphere.demo_shardingsphere.service.OrderService;
-import org.apache.commons.collections4.keyvalue.DefaultKeyValue;
+import com.zengpeng.shardingsphere.demo_shardingsphere.util.LeftGenerator;
 import org.apache.shardingsphere.core.strategy.keygen.SnowflakeShardingKeyGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Properties;
+import javax.sound.midi.Soundbank;
+import java.util.*;
 
 @SpringBootTest
 class DemoShardingsphereApplicationTests {
 
+//    @Autowired
+//    GetPrimaryKeyFeign getPrimaryKeyFeign;
     @Autowired
     OrderService orderService;
     @Autowired
     TOrderDetailRepository tOrderDetailRepository;
+    @Autowired
+    TestFeign testFeign;
+    @Autowired
+    LeftGenerator leftGenerator;
+
+    @Test
+    void testLeftGenerator(){
+//        LeftGenerator leftGenerator = new LeftGenerator();
+        for (int i =0;i<10;i++){
+            System.out.println("----"+leftGenerator.generateKey());
+        }
+    }
+
+    @Test
+    void tesFeign(){
+        System.out.println("-----"+ JSONObject.toJSONString(testFeign.getSegmentPrimaryKey("tes33")));
+//
+//        System.out.println("-----"+ JSONObject.toJSONString(testFeign.getSegmentPrimaryKeys("tes",10)));
+//        Result snowFlake = testFeign.getSnowflakePrimaryKey("1111");
+//        System.out.println("-----"+ JSONObject.toJSONString(snowFlake));
+//        System.out.println("-----"+ JSONObject.toJSONString(testFeign.getSnowflakePrimaryKeys("1111",10)));
+//        JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(snowFlake.getData()));
+//        System.out.println("-----"+ testFeign.decodeSnowflakeId(jsonObject.getString("primaryKey")));
+
+        System.out.println("-----"+ JSONObject.toJSONString(testFeign.decodeSnowflakeId("1554363334955")));
+    }
+
+//    @Test
+//    void getPrimaryKey(){
+//        System.out.println("-----"+getPrimaryKeyFeign.getSegmentPrimaryKey());
+//
+//        System.out.println("-----"+getPrimaryKeyFeign.getSnowflakePrimaryKey());
+//    }
 
     @Test
     void contextLoads() {
 //        748252925360345089
 //        748252925721055232
+        List<TOrderEntity> list = new ArrayList<>();
         for (int i = 1; i < 1001; i++) {
             TOrderEntity tOrderEntity = new TOrderEntity();
             tOrderEntity.setBusinessId(Long.valueOf(i));
 //            tOrderEntity.setId(Long.valueOf(i));
             tOrderEntity.setOrderId(Long.valueOf(i));
             tOrderEntity.setUserId(Long.valueOf(i));
-            orderService.addOrder(tOrderEntity);
+//            orderService.addOrder(tOrderEntity);
+            list.add(tOrderEntity);
         }
+        orderService.saveOrderList(list);
 
     }
 
@@ -100,6 +144,12 @@ class DemoShardingsphereApplicationTests {
 
         System.out.println(4516113514L % 16);
         System.out.println(3514 % 16);
+
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("ss","ee");
+        map.put("ss1","ee1");
+        System.out.println(map);
 
     }
 

@@ -1,20 +1,34 @@
 package com.zengpeng.shardingsphere.demo_shardingsphere.util;
 
-import com.sankuai.inf.leaf.service.SegmentService;
-import com.sankuai.inf.leaf.service.SnowflakeService;
+
+import com.alibaba.fastjson.JSONObject;
+import com.zengpeng.shardingsphere.demo_shardingsphere.feign.TestFeign;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shardingsphere.spi.keygen.ShardingKeyGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
-public final class LeftGenerator implements ShardingKeyGenerator {
+@Slf4j
+@Component
+public final class LeftGenerator implements ShardingKeyGenerator, ApplicationContextAware {
 
+
+    private static TestFeign testFeign;
 
     @Override
     public Comparable<?> generateKey() {
-
-        return null;
+       JSONObject jsonObject =  JSONObject.parseObject(JSONObject.toJSONString(testFeign.getSnowflakePrimaryKey("LEFTSNOWFLAKE")));
+        log.info(jsonObject.toJSONString());
+       Long id = null;
+        if(jsonObject.getString("code").equals("1")){
+            String primaryKey = jsonObject.getJSONObject("data").getString("primaryKey");
+            id = Long.parseLong(primaryKey);
+        }
+        return id;
     }
 
     @Override
@@ -30,5 +44,10 @@ public final class LeftGenerator implements ShardingKeyGenerator {
     @Override
     public void setProperties(Properties properties) {
 
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        testFeign = applicationContext.getBean(TestFeign.class);
     }
 }
