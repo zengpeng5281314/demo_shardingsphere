@@ -23,7 +23,7 @@ public final class LeftGenerator implements ShardingKeyGenerator, ApplicationCon
     public Comparable<?> generateKey() {
        JSONObject jsonObject =  JSONObject.parseObject(JSONObject.toJSONString(testFeign.getSnowflakePrimaryKey("LEFTSNOWFLAKE")));
         log.info(jsonObject.toJSONString());
-       Long id = null;
+        Long id = null;
         if(jsonObject.getString("code").equals("1")){
             String primaryKey = jsonObject.getJSONObject("data").getString("primaryKey");
             id = Long.parseLong(primaryKey);
