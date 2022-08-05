@@ -33,6 +33,12 @@ class DemoShardingsphereApplicationTests {
     LeftGenerator leftGenerator;
 
     @Test
+    void testLeftJoin(){
+        //测试leftjoin
+        System.out.println("----"+orderService.getListLeftJoin(1554793079033036840L));
+    }
+
+    @Test
     void testLeftGenerator(){
 //        LeftGenerator leftGenerator = new LeftGenerator();
         for (int i =0;i<10;i++){
@@ -81,7 +87,7 @@ class DemoShardingsphereApplicationTests {
 
     @Test
     void search() {
-        System.out.println("------：" + orderService.selectById(742354717409017857L));
+        System.out.println("------：" + orderService.selectById(1554793074993922144L));
 //        System.out.println("------："+orderService.selectById(742351195191902208L));
 //
 //        System.out.println("------："+orderService.selectByBId(742351195716190208L,7L));
