@@ -1,6 +1,7 @@
 package com.zengpeng.shardingsphere.demo_shardingsphere.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zengpeng.shardingsphere.demo_shardingsphere.dto.OrderDesInfoDTO;
 import com.zengpeng.shardingsphere.demo_shardingsphere.dto.OrderInfoDTO;
 import com.zengpeng.shardingsphere.demo_shardingsphere.dto.ParamRequest;
 import com.zengpeng.shardingsphere.demo_shardingsphere.entity.TOrderEntity;
@@ -46,6 +47,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<TOrderEntity> selectByBIdAndUserID(Long bid, Long userID) {
+        TOrderEntity orderEntity = new TOrderEntity();
+        orderEntity.setBusinessId(bid);
+        orderEntity.setUserId(userID);
+        Example<TOrderEntity> example = Example.of(orderEntity);
+        return torderRepository.findAll(example);
+    }
+
+    @Override
     public List<TOrderEntity> listByBusinessId(Long listByBusinessId) {
         TOrderEntity orderEntity = new TOrderEntity();
         orderEntity.setBusinessId(listByBusinessId);
@@ -59,6 +69,14 @@ public class OrderServiceImpl implements OrderService {
         List<Object[]> list = torderRepository.getListLeftJoin(id);
         //TODO 把list的数据取出来放入 OrderInfoDTO 中
         return listOrderInfoDTO;
+    }
+
+    @Override
+    public List<OrderDesInfoDTO> getListLeftJoin(Long bid, Long userId) {
+        List<OrderDesInfoDTO> listOrderDesInfoDTO = new ArrayList<>();
+        List<Object[]> list = torderRepository.getListLeftJoin(bid,userId);
+        //TODO 把list的数据取出来放入 OrderDesInfoDTO 中
+        return listOrderDesInfoDTO;
     }
 
 }
